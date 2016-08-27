@@ -7,7 +7,11 @@ import ContactCreate from './ContactCreate';
 
 export default class Contact extends React.Component {
 
+  // 이 컴포넌트의 state는 constructor에서만 만들어놓을 수 있다.
+  // constructor를 제외한 곳에서는 '수정'만 가능하다. 새로운 프로퍼티 제작 못한다고.
   constructor(props) {
+    //super() => 이 객체가 상속받은 부모객체 (React.Component)의 실행자를 실행시키는 코드.
+    // ?? 그래서 뭔 역할인데.
     super(props);
     this.state = {
       selectedKey : -1,
@@ -136,6 +140,8 @@ export default class Contact extends React.Component {
         <div>
           {mapToComponents(this.state.contactData)}
         </div>
+        {/*아래 컴포넌트들로 내려주는 값들을 변화시킬 수 있다. 아랫 녀석들은 바뀐 값들로 다시 그려진다.
+          왜냐하면 state가 바뀌면 자동으로 뷰가 다시 그려지기 때문이다. 물론 '필요한 부분만' 다시 그려진다.*/}
         <ContactDetails contact={this.state.contactData[this.state.selectedKey]}
           isSelected={this.state.selectedKey!=-1} onRemove={this.handleRemove}
           onEdit={this.handleEdit} />
