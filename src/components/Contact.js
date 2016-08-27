@@ -27,12 +27,18 @@ export default class Contact extends React.Component {
       }]
     };
 
+    // 함수의 컨텍스트 문제 때문에 이걸 써준다.
+    // 이 객체(클래스)의 handleChange란 함수 (사실 변수지만)에 이 객체(클래스)를 바인딩한
+    // 새로운 함수 (바인딩 한 것 빼곤 똑같지만)을 대입한다. 할당한다.
+    // 함수 객체에 속성 하나 추가해준 거나 다름 없음.
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
+  // 리액트 생명 주기. React Life-cycle => 잘 알아놔야한다. 중요하다.
   componentWillMount() {
     let contactData = localStorage.contactData;
     if(contactData){
@@ -49,6 +55,7 @@ export default class Contact extends React.Component {
     }
   }
 
+  //이벤트 객체에 관하여 잘 알아둘 것.
   handleChange(e) {
     this.setState({
       keyword: e.target.value
@@ -78,6 +85,7 @@ export default class Contact extends React.Component {
     this.setState({
       contactData: update(
         this.state.contactData,
+        // $splice => 제거. 제거할 값의 인덱스, 거기부터 지울 갯수.
         { $splice: [[this.state.selectedKey, 1]] }
       ),
       selectedKey: -1 // 현재 선택중인걸 무효화
@@ -106,10 +114,14 @@ export default class Contact extends React.Component {
           let name = contact.name.toLowerCase();
           let keyword = this.state.keyword.toLowerCase();
 
+          // name에서 keyword를 찾을 수 있는지 없는지.
+          // indexOf => 없으면 -1을 리턴하고, 있으면 keyword의 위치를 반환. 갯수가 아니다.
           return name.indexOf(keyword) > -1;
         }
       );
       return data.map((contact, i) => {
+        // map 할 때는 항상 요소마다 key 를 할당해 줘야 한다.
+        // ContactInfo가 컴포넌트이므로 여기의 onClick은 프로퍼티다.
         return (<ContactInfo onClick={()=>{this.handleClick(i);}} contact={contact} key={i}/>);
       });
     };
@@ -117,6 +129,8 @@ export default class Contact extends React.Component {
     return (
       <div>
         <h1>Contacts</h1>
+        {/* onChange, onRemove, onEdit... => 함수가 아니라 프로퍼티다. 프로퍼티로 넘기면
+          컴포넌트 안에서 this.props.onChange()같이 사용가능.*/}
         <input name="keyword" placeholder="Search" value={this.state.keyword}
           onChange={this.handleChange}/>
         <div>
@@ -124,7 +138,7 @@ export default class Contact extends React.Component {
         </div>
         <ContactDetails contact={this.state.contactData[this.state.selectedKey]}
           isSelected={this.state.selectedKey!=-1} onRemove={this.handleRemove}
-          onEdit={this.handleEdit.bind(this)} />
+          onEdit={this.handleEdit} />
         <ContactCreate onCreate={this.handleCreate}/>
       </div>
     );

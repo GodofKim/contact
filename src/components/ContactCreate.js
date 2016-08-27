@@ -31,11 +31,14 @@ export default class ContactCreate extends React.Component {
       phone: ''
     });
 
+    //프로퍼티 ref와 관련된 코드. 지금 이 코드는 포커스를 강제로 옮긴다.
     this.nameInput.focus();
   }
 
   handleChange(e) {
     let nextState = {};
+    // e.target.name => 말 그대로 한 엘리먼트의 'name'프로퍼티를 의미한다.
+    // 아래 줄로 인해 nextState = { name: e.target.value }가 됨.
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
   }
@@ -50,7 +53,7 @@ export default class ContactCreate extends React.Component {
               ref={(ref)=> { this.nameInput = ref; }}/>
           <input type="text" name="phone" placeholder="phone"
               value={this.state.phone} onChange={this.handleChange}
-              onKeyPress={this.handleKeyPress.bind(this)}/>
+              onKeyPress={this.handleKeyPress}/>
         </p>
         <button onClick={this.handleClick}>Create</button>
       </div>

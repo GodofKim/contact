@@ -51,11 +51,11 @@ export default class ContactDetails extends Component{
       <div>
         <p>
           <input type="text" name="name" placeholder="name"
-            value={this.state.name} onChange={this.handleChange} onKeyPress={this.handleKeyPress.bind(this)}/>
+            value={this.state.name} onChange={this.handleChange} onKeyPress={this.handleKeyPress}/>
         </p>
         <p>
           <input type="text" name="phone" placeholder="phone"
-            value={this.state.phone} onChange={this.handleChange} onKeyPress={this.handleKeyPress.bind(this)}/>
+            value={this.state.phone} onChange={this.handleChange} onKeyPress={this.handleKeyPress}/>
         </p>
       </div>
     );
@@ -72,7 +72,7 @@ export default class ContactDetails extends Component{
       <div>
         { this.state.isEdit ? edit : read }
         <button onClick={this.handleToggle}>{this.state.isEdit ? 'Ok' : 'Edit'}</button>
-        <button onClick={this.handleRemove.bind(this)}>Remove</button>
+        <button onClick={this.handleRemove}>Remove</button>
       </div>
     );
 
@@ -86,7 +86,7 @@ export default class ContactDetails extends Component{
     );
   }
 }
-
+// 값이 없을 때 기본으로 설정해 놓을 값. 오류 날때 이것 때문이 아닐지 유심히 확인한다. (can't do ~ to null / undefined 등등)
 ContactDetails.defaultProps = {
   contact : {
     name: '',
